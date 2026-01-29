@@ -6,9 +6,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { redirect } from "next/navigation";
 
 const schema = z.object({
-  fullName: z.string().min(1, "Full name is required"),
   email: z.email("Please make sure the email is valid"),
   password: z.string().min(6, "Password should be at least 6 characters long"),
 });
@@ -19,31 +20,18 @@ export default function SignUpForm() {
     resolver: zodResolver(schema),
   });
 
-  function onSubmit(data: z.infer<typeof schema>) {
-    console.log(data)
+  async function onSubmit(data: z.infer<typeof schema>) {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signUp(data)
+    if (error) {
+      redirect('/error')
+    }
+    redirect('/')
   }
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
-            Full name
-          </label>
-          <div className="relative">
-            <input
-              id="fullName"
-              type="text"
-              {...register("fullName")}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="John Doe"
-              required
-            />
-          </div>
-
-          {!!errors.fullName && <span className="text-red-400">{ errors.fullName.message }</span>}
-        </div>
-
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
             Email address
