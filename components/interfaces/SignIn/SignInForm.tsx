@@ -47,7 +47,7 @@ export default function SignInForm() {
           type="submit"
           className={"w-full py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-medium flex items-center justify-center gap-2"}
         >
-          Create Account
+          Sign In
           <ArrowRight className="w-5 h-5" />
         </button>
       </form>
@@ -58,7 +58,7 @@ export default function SignInForm() {
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Or sign up with</span>
+            <span className="px-2 bg-white text-gray-500">Or continue with</span>
           </div>
         </div>
 
