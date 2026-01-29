@@ -1,13 +1,19 @@
 import Feature from "@/components/interfaces/Feature";
 import PricingCard from "@/components/interfaces/PricingCard";
 import { features, pricing } from "@/lib/data";
+import { createClient } from "@/lib/supabase/server";
 import { ArrowRight, BarChart3, Zap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data: { user }} = await supabase.auth.getUser();
+
+  console.log("user", user)
+  
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       {/* Navbar */}
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
         <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-sm fixed w-full top-0 z-50">
@@ -21,13 +27,22 @@ export default function HomePage() {
                 <Link href="#features" className="text-gray-600 hover:text-gray-900">Features</Link>
                 <Link href="#pricing" className="text-gray-600 hover:text-gray-900">Pricing</Link>
                 <Link href="#about" className="text-gray-600 hover:text-gray-900">About</Link>
-                <Link href="/sign-in" className="text-gray-600 hover:text-gray-900">Sign In</Link>
-                <Link
-                  href="/sign-up"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Get Started
-                </Link>
+                {!!user ? (
+                  <Link
+                    href="/dashboard"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >Dashboard</Link>
+                ) : (
+                  <>
+                    <Link href="/sign-in" className="text-gray-600 hover:text-gray-900">Sign In</Link>
+                    <Link
+                      href="/sign-up"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

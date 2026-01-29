@@ -1,11 +1,25 @@
 "use client"
 
+import { createClient } from "@/lib/supabase/client";
 import { ArrowRight } from "lucide-react";
+import { redirect } from "next/navigation";
+import { useState, SubmitEvent } from "react";
 
 export default function SignInForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function handleSubmit(data: any) {
-    console.log(data)
+  async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const supabase = await createClient()
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error) {
+      alert(error.message)
+      return
+    }
+
+    redirect("/dashboard")
   }
 
   return (
@@ -22,6 +36,8 @@ export default function SignInForm() {
               name="email"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="you@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -38,6 +54,8 @@ export default function SignInForm() {
               name="password"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
