@@ -1,23 +1,30 @@
-export const features = [
+import { Feature, Pricing } from "@/types";
+import { Zap, BarChart3, Users, FileText } from "lucide-react";
+
+export const features: Feature[] = [
   {
     title: "AI Insights",
     description: "Generate summaries, trends, and recommendations using AI.",
+    icon: Zap,
   },
   {
     title: "Analytics Dashboards",
     description: "Track KPIs with clean, real-time dashboards.",
+    icon: BarChart3,
   },
   {
     title: "Team Workspaces",
     description: "Multi-tenant organizations with role-based access.",
+    icon: Users,
   },
   {
     title: "Exportable Reports",
     description: "Download CSV and PDF reports ready for clients or execs.",
+    icon: FileText,
   },
 ];
 
-export const pricing = [
+export const pricing: Pricing[] = [
   {
     title: "Free",
     price: 0,
@@ -30,7 +37,7 @@ export const pricing = [
       "Excel exports",
     ],
     cta: "Get started",
-    variant: "default" as "default" | "highlight",
+    isHighlighted: false,
   },
   {
     title: "Pro",
@@ -46,7 +53,7 @@ export const pricing = [
       "Role-based permissions",
     ],
     cta: "Start Pro trial",
-    variant: "highlight" as "default" | "highlight",
+    isHighlighted: true,
   },
   {
     title: "Business",
@@ -62,6 +69,6 @@ export const pricing = [
       "Audit logs",
     ],
     cta: "Contact sales",
-    variant: "default" as "default" | "highlight",
+    isHighlighted: false,
   },
 ]

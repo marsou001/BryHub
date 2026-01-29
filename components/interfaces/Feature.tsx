@@ -1,8 +1,17 @@
-export default function Feature({ title, description }: { title: string; description: string }) {
+import { Feature } from "@/types";
+
+export default function FeatureCard({ title, description, icon: Icon }: Feature) {
   return (
-    <div className="rounded-lg border bg-card p-6">
-      <h3 className="font-medium">{title}</h3>
-      <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+    <div
+      className="bg-white p-8 rounded-xl border border-gray-200 hover:border-blue-200 hover:shadow-lg transition-all"
+    >
+      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+        <Icon className="w-6 h-6 text-blue-600" />
+      </div>
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        {title}
+      </h3>
+      <p className="text-gray-600">{description}</p>
     </div>
   );
 }
