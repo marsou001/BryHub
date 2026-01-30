@@ -19,7 +19,7 @@ export default function SignInForm() {
       return
     }
 
-    redirect("/dashboard")
+    redirect("/organizations")
   }
 
   return (

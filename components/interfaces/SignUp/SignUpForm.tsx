@@ -26,7 +26,7 @@ export default function SignUpForm() {
     const { error } = await supabase.auth.signUp({
       ...data,
       options: {
-        emailRedirectTo: "http://localhost:3000/dashboard"
+        emailRedirectTo: "http://localhost:3000/organizations"
       }
     })
     if (error) {
