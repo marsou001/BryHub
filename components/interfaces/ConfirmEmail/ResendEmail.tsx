@@ -14,15 +14,15 @@ export default function ResendEmail({ email }: { email: string }) {
     const { error } = await supabase.auth.resend({
       type: "signup",
       email,
-      options: { emailRedirectTo: "http://localhost:3000/dashboard"}
+      options: { emailRedirectTo: "http://localhost:3000/organizations"}
     })
 
     if (error) {
-      // toast error message
+      // TODO: toast error message
       console.log("error resending email: ", error)
       return
     } else {
-      // toast error message
+      // TODO: toast success message
     }
     setIsResending(false)
   }
