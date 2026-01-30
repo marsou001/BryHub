@@ -1,18 +1,8 @@
 import Link from "next/link";
 import { ArrowRight, BarChart3 } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
 import ConfirmEmail from "@/components/interfaces/ConfirmEmail/ConfirmEmail";
 
 export default async function ConfirmEmailPage() {
-  const supabase = await createClient()
-  const { data, error } = await supabase.auth.getClaims()
-  const email = data?.claims.email
-
-  if (error || !email) {
-    console.log("error", error)
-    return <h1>uuu</h1>
-  }
-
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
       <div className="w-full max-w-md">

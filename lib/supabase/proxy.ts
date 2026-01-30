@@ -36,35 +36,28 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims()
   const user = data?.claims
 
-  if (
-    !user &&
-    request.nextUrl.pathname !== "/" &&
-    // !request.nextUrl.pathname.startsWith('/confirm-email') &&
-    !request.nextUrl.pathname.startsWith('/sign-up') &&
-    !request.nextUrl.pathname.startsWith('/sign-in')
-  ) {
+  const isPublicRoute = request.nextUrl.pathname === "/"
+  const isAuthRoute = request.nextUrl.pathname.startsWith('/confirm-email')
+    || request.nextUrl.pathname.startsWith('/sign-up')
+    || request.nextUrl.pathname.startsWith('/sign-in')
+
+  const isProtectedRoute = !isPublicRoute && !isAuthRoute
+
+  if (!user && isProtectedRoute) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/sign-in'
     return NextResponse.redirect(url)
   }
-  
-  const { data: userData } = await supabase.auth.getUser()
-  console.log("userData", userData)
-  const isEmailConfirmed = userData.user?.email_confirmed_at !== null
 
-  if (
-    user &&
-    !isEmailConfirmed &&
-    request.nextUrl.pathname !== "/" &&
-    !request.nextUrl.pathname.startsWith('/confirm-email')
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  if (user && isAuthRoute) {
+    // user is authenticated, potentially respond by redirecting the user to the
+    // organizations page
     const url = request.nextUrl.clone()
-    url.pathname = '/confirm-email'
+    url.pathname = '/organizations'
     return NextResponse.redirect(url)
   }
-
+  
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
