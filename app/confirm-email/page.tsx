@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, CheckCircle, Mail } from "lucide-react";
+import { ArrowRight, BarChart3 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import ResendEmail from "@/components/interfaces/ConfirmEmail/ResendEmail";
 import ConfirmEmail from "@/components/interfaces/ConfirmEmail/ConfirmEmail";
 
 export default async function ConfirmEmailPage() {

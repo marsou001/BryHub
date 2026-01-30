@@ -17,13 +17,18 @@ const schema = z.object({
 
 export default function SignUpForm() {
   const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { isSubmitting, errors } } = useForm({
     resolver: zodResolver(schema),
   });
 
   async function onSubmit(data: z.infer<typeof schema>) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.signUp(data)
+    const { error } = await supabase.auth.signUp({
+      ...data,
+      options: {
+        emailRedirectTo: "http://localhost:3000/dashboard"
+      }
+    })
     if (error) {
       // toast error message
       return
@@ -92,13 +97,13 @@ export default function SignUpForm() {
 
         <button
           type="submit"
-          disabled={!hasAgreedToTerms}
+          disabled={!hasAgreedToTerms || isSubmitting}
           className={`
             w-full py-3 text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2
-            ${hasAgreedToTerms ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"}
+            ${hasAgreedToTerms || isSubmitting ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"}
           `}
         >
-          Create Account
+          {isSubmitting ? "Creating..." : "Create Account"}
           <ArrowRight className="w-5 h-5" />
         </button>
       </form>
@@ -115,7 +120,7 @@ export default function SignUpForm() {
 
         <div className="mt-6">
           <button
-            disabled={!hasAgreedToTerms}
+            disabled={!hasAgreedToTerms || isSubmitting}
             className={`
               w-full flex items-center justify-center px-4 py-3 border rounded-lg transition-colors
               ${hasAgreedToTerms ? "border-gray-300 hover:bg-gray-50" : "bg-gray-200"}

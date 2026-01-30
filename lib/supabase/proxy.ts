@@ -39,13 +39,29 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     request.nextUrl.pathname !== "/" &&
-    !request.nextUrl.pathname.startsWith('/confirm-email') &&
+    // !request.nextUrl.pathname.startsWith('/confirm-email') &&
     !request.nextUrl.pathname.startsWith('/sign-up') &&
     !request.nextUrl.pathname.startsWith('/sign-in')
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/sign-in'
+    return NextResponse.redirect(url)
+  }
+  
+  const { data: userData } = await supabase.auth.getUser()
+  console.log("userData", userData)
+  const isEmailConfirmed = userData.user?.email_confirmed_at !== null
+
+  if (
+    user &&
+    !isEmailConfirmed &&
+    request.nextUrl.pathname !== "/" &&
+    !request.nextUrl.pathname.startsWith('/confirm-email')
+  ) {
+    // no user, potentially respond by redirecting the user to the login page
+    const url = request.nextUrl.clone()
+    url.pathname = '/confirm-email'
     return NextResponse.redirect(url)
   }
 

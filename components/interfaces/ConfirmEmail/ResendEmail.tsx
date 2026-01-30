@@ -19,6 +19,7 @@ export default function ResendEmail({ email }: { email: string }) {
 
     if (error) {
       // toast error message
+      console.log("error resending email: ", error)
       return
     } else {
       // toast error message
