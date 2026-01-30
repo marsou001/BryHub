@@ -5,6 +5,7 @@ import ResendEmail from "./ResendEmail"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { LOCAL_STORAGE_KEYS } from "@/lib/localStorage"
+import { redirect } from "next/navigation"
 
 export default function ConfirmEmail() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function ConfirmEmail() {
   useEffect(() => {
     const email = localStorage.getItem(LOCAL_STORAGE_KEYS.CONFIRMATION_EMAIL_KEY)
     if (email === null) {
-      // TODO: handle later
+      redirect("/sign-in")
     } else {
       setEmail(email)
     }
