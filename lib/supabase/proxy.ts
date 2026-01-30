@@ -39,6 +39,7 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     request.nextUrl.pathname !== "/" &&
+    !request.nextUrl.pathname.startsWith('/confirm-email') &&
     !request.nextUrl.pathname.startsWith('/sign-up') &&
     !request.nextUrl.pathname.startsWith('/sign-in')
   ) {

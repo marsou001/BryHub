@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { redirect } from "next/navigation";
+import { LOCAL_STORAGE_KEYS } from "@/lib/localStorage";
 
 const schema = z.object({
   email: z.email("Please make sure the email is valid"),
@@ -24,9 +25,12 @@ export default function SignUpForm() {
     const supabase = await createClient();
     const { error } = await supabase.auth.signUp(data)
     if (error) {
-      redirect('/error')
+      // toast error message
+      return
     }
-    redirect('/')
+
+    localStorage.setItem(LOCAL_STORAGE_KEYS.CONFIRMATION_EMAIL_KEY, data.email)
+    redirect('/confirm-email')
   }
 
   return (
